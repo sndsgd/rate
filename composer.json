@@ -1,0 +1,28 @@
+{
+    "name": "sndsgd/rate",
+    "description": "rate tools",
+    "type": "library",
+    "homepage": "https://github.com/sndsgd/rate",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Russell B",
+            "homepage": "http://snds.gd/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sndsgd/rate/issues",
+        "source": "https://github.com/sndsgd/rate/tree/master"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0",
+        "sndsgd/util": "~1.0.3",
+        "sndsgd/error": "~0.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "sndsgd\\": "src"
+        }
+    }
+}

@@ -1,0 +1,103 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "17453b492adc60132ed57259bd2a713b",
+    "content-hash": "21a7e652108949358054bb6c7d0371f1",
+    "packages": [
+        {
+            "name": "sndsgd/error",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sndsgd/sndsgd-error.git",
+                "reference": "1374b2158e08263651fb513c0ff85fdc84001b04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sndsgd/sndsgd-error/zipball/1374b2158e08263651fb513c0ff85fdc84001b04",
+                "reference": "1374b2158e08263651fb513c0ff85fdc84001b04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "~1.0",
+                "sndsgd/util": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sndsgd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Russell B",
+                    "homepage": "http://snds.gd/"
+                }
+            ],
+            "description": "A simple error implementation in PHP",
+            "homepage": "https://github.com/sndsgd/sndsgd-error",
+            "time": "2016-04-09 11:04:39"
+        },
+        {
+            "name": "sndsgd/util",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sndsgd/sndsgd-util.git",
+                "reference": "07b66088d8d3f558bb4838ba29bcfa98ef4e38ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sndsgd/sndsgd-util/zipball/07b66088d8d3f558bb4838ba29bcfa98ef4e38ea",
+                "reference": "07b66088d8d3f558bb4838ba29bcfa98ef4e38ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "~1.6.0",
+                "satooshi/php-coveralls": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "sndsgd\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Russell B",
+                    "homepage": "http://snds.gd/"
+                }
+            ],
+            "description": "A utility toolkit for PHP",
+            "homepage": "https://github.com/sndsgd/sndsgd-util",
+            "time": "2016-05-08 10:20:06"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.0.0"
+    },
+    "platform-dev": []
+}
