@@ -77,12 +77,14 @@ class Limit implements LimitInterface, \JsonSerializable
 
     /**
      * Retreive the cache key to store the hit value in
+     * The hash does NOT include the limit so the limit can be changed
+     * without having an affect on the current count
      *
      * @return string
      */
     public function getHash(): string
     {
-        return "{$this->name}|{$this->info}|{$this->limit}|{$this->duration}";
+        return "{$this->name}|{$this->info}|{$this->duration}";
     }
 
     /**

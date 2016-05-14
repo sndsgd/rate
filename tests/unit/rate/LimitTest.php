@@ -20,7 +20,7 @@ class LimitTest extends \PHPUnit_Framework_TestCase
     public function providerGetHash()
     {
         return [
-            ["a", "b", 1, 2, "a|b|1|2"],
+            ["a", "b", 1, 2, "a|b|2"],
         ];
     }
 
