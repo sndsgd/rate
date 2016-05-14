@@ -2,6 +2,10 @@
 
 namespace sndsgd\rate\limiter;
 
+/**
+ * A limiter implements the logic needed to determine if one or more limits 
+ * have been exceeded
+ */
 interface LimiterInterface
 {
     /**

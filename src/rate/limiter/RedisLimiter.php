@@ -5,90 +5,75 @@ namespace sndsgd\rate\limiter;
 class RedisLimiter extends LimiterAbstract
 {
     /**
+     * A redis connection resource
+     *
+     * @var \Redis
+     */
+    protected $redis;
+
+    /**
+     * @param \Redis $redis
+     * @param array<\sndsgd\rate\LimitInterface> $limits
+     */
+    public function __construct(\Redis $redis, array $limits)
+    {
+        $this->redis = $redis;
+        parent::__construct($limits);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function increment(int $incrementBy = 1): LimiterInterface
     {
-        if (count($this->rateLimits) > 1) {
-            return $this->incrementMultiple();
+        $incrementResults = $this->incrementKeys($incrementBy);
+
+        $timeouts = [];
+        foreach ($this->limits as $limit) {
+            $hits = array_shift($incrementResults);
+            $timeout = array_shift($incrementResults);
+            if ($hits === 1) {
+                $timeouts[] = $limit;
+                $timeout = $limit->getDuration();
+            }
+            $period = new \sndsgd\rate\limit\Period($limit, $hits, $timeout);
+            $this->periods[$limit->getHash()] = $period;
         }
 
-        $limit = $this->limits[0];
-        $cacheKey = $limit->getCacheKey();
-
-        # use a pipeline to increment and retrieve the ttl in one shot
-        list($hits, $ttl) = $redis
-            ->multi(\Redis::PIPELINE)
-            ->incrBy($cacheKey, $incrementBy)
-            ->ttl($cacheKey)
-            ->exec();
-
-        if ($ttl === -1) {
-            $result = $redis->setTimeout($cacheKey, $limit->getDuration());
+        if ($timeouts) {
+            $this->setTimeouts($timeouts);
         }
-
-        $this->hits[0] = $hits;
-        $this->ttls[0] = $ttl;
-
         return $this;
     }
 
     /**
-     * Increment multiple limits
+     * Stubbable method for incrementing the keys
      *
-     * @return \sndsgd\rate\limit\LimiterInterface
+     * @param int $incrementBy The number of hits to increment by
+     * @return array<int> Alternating hit count and ttl seconds
      */
-    protected function incrementMultiple(): LimiterInterface
+    protected function incrementKeys(int $incrementBy)
     {
-
-    }
-
-
-
-
-        # create a pipeline for incrementing and retrieving the ttl
-        $pipe = $redis->multi(\Redis::PIPELINE);
-
-
-        # create a pipeline for incrementing all limits in one request
-        $pipe = $redis->multi(\Redis::PIPELINE);
-        for ($i = 0; $i < $count; $i++) {
-            $rateLimit = $this->rateLimits[$i];
-            $cacheKey = $rateLimit->getCacheKey();
-            $pipe->incr($cacheKey);
+        $pipe = $this->redis->multi(\Redis::PIPELINE);
+        foreach ($this->limits as $limit) {
+            $cacheKey = $limit->getHash();
+            $pipe->incrBy($cacheKey, $incrementBy);
             $pipe->ttl($cacheKey);
         }
-        $results = $pipe->exec();
+        return $pipe->exec();
+    }
 
-        $timeouts = [];
-        for ($i = 0, $i < $count; $i++) {
-            $this->hits[$i] = $results[$i];
-            $this->ttls[$i] = array_splice($results, $i, 1);
-            if ($this->ttls[$i] === -1) {
-                $timeouts[] = $this->rateLimits[$i];
-            }
+    /**
+     * Stubbable method for setting timeouts on new keys
+     *
+     * @param array<\sndsgd\rate\LimitInterface> The limits to set timeouts for
+     */
+    protected function setTimeouts(array $limits)
+    {
+        $pipe = $this->redis->multi(\Redis::PIPELINE);
+        foreach ($limits as $limit) {
+            $pipe->setTimeout($limit->getHash(), $limit->getDuration());
         }
-
-        # if ttls need to be set batch them into a single request
-        if ($timeouts) {
-            $pipe = $redis->multi(\Redis::PIPELINE);
-            foreach ($timeouts as $rateLimit) {
-                $cacheKey = $rateLimit->getCacheKey();
-                $duration = $rateLimit->getDuration();
-                $pipe->setTimeout($cacheKey, $duration);
-            }
-
-            # verify the timeouts were set
-            # if
-            foreach ($pipe->exec() as $setTimeoutResult) {
-                if (!$setTimeoutResult) {
-
-                } else {
-                    
-                }
-            }
-        }
+        $pipe->exec();
     }
 }
-
-

@@ -2,7 +2,7 @@
 
 namespace sndsgd\rate;
 
-class Limit implements \JsonSerializable
+class Limit implements LimitInterface, \JsonSerializable
 {
     /**
      * A client facing name for the rate limiter
@@ -47,65 +47,32 @@ class Limit implements \JsonSerializable
     ) {
         $this->name = $name;
         $this->info = $info;
-        $this->limit = $this->verifyInt($limit, 'limit');
-        $this->duration = $this->verifyInt($duration, 'duration');
+        $this->limit = max($limit, 1);
+        $this->duration = max($duration, 1);
     }
 
     /**
-     * Ensure a value is an integer greater than 0
-     * @param int $value
-     * @param string $name
-     * @return int
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
-    protected function verifyInt(int $value, string $name)
+    public function getName(): string
     {
-        if ($value < 1) {
-            throw new \InvalidArgumentException(
-               "invalid value provided for '$name'; ".
-               "expecting an integer greater than 0"
-            );
-        }
-        return $value;
+        return $this->name;
     }
 
     /**
-     * Get the header key for this particular rate limit
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getHeaderKey(): string
+    public function getLimit(): int
     {
-        return "X-RateLimit-{$this->name}";
+        return $this->limit;
     }
 
     /**
-     * Get the header value for this particular rate limit
-     *
-     * @param int $hits The number of hits towards the limit
-     * @param int $ttl The number of seconds before the limit resets
-     * @return string
+     * {@inheritdoc}
      */
-    public function getHeaderValue(int $hits = 0, int $ttl): string
+    public function getDuration(): int
     {
-        return sprintf(
-            "Limit: %d; Remaining-Hits: %d; Reset-In: %d",
-            $this->limit,
-            $this->getRemainingHits($hits),
-            max($ttl, 1)
-        );
-    }
-
-    /**
-     * Get the number of hits remaining
-     *
-     * @param int $hits The number of hits recorded
-     * @return int
-     */
-    protected function getRemainingHits(int $hits): int
-    {
-        $remainingHits = $this->limit - $hits;
-        return max($remainingHits, 0);
+        return $this->duration;
     }
 
     /**
@@ -113,14 +80,9 @@ class Limit implements \JsonSerializable
      *
      * @return string
      */
-    public function getCacheKey(): string
+    public function getHash(): string
     {
-        return implode("|", [
-            $this->name,
-            $this->info,
-            $this->limit,
-            $this->duration,
-        ]);
+        return "{$this->name}|{$this->info}|{$this->limit}|{$this->duration}";
     }
 
     /**

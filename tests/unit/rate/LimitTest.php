@@ -2,73 +2,22 @@
 
 namespace sndsgd\rate;
 
+/**
+ * @coversDefaultClass \sndsgd\rate\Limit
+ */
 class LimitTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider providerConstructor
+     * @covers ::getHash
+     * @dataProvider providerGetHash
      */
-    public function testConstructor($name, $info, $limit, $duration, $exception)
-    {
-        if ($exception) {
-            $this->setExpectedException($exception);
-        }
-
-        $test = new Limit($name, $info, $limit, $duration);
-    }
-
-    public function providerConstructor()
-    {
-        return [
-            ["name", "info", 0, 1, \InvalidArgumentException::class],
-            ["name", "info", 1, 0, \InvalidArgumentException::class],
-            ["name", "info", 1, 1, ""],
-        ];
-    }
-
-    /**
-     * @dataProvider providerGetHeaderKey
-     */
-    public function testGetHeaderKey($name, $info, $expect)
-    {
-        $test = new Limit($name, $info);
-        $this->assertSame($expect, $test->getHeaderKey());
-    }
-
-    public function providerGetHeaderKey()
-    {
-        return [
-            ["name", "info", "X-RateLimit-name"],
-            ["Name", "info", "X-RateLimit-Name"],
-        ];
-    }
-
-    /**
-     * @dataProvider providerGetHeaderValue
-     */
-    public function testGetHeaderValue($limit, $hits, $ttl, $expect)
-    {
-        $test = new Limit("name", "info", $limit);
-        $this->assertSame($expect, $test->getHeaderValue($hits, $ttl));
-    }
-
-    public function providerGetHeaderValue()
-    {
-        $template = "Limit: %d; Remaining-Hits: %d; Reset-In: %d";
-        return [
-            [3, 2, 5, sprintf($template, 3, 1, 5)],
-        ];
-    }
-
-    /**
-     * @dataProvider providerGetCacheKey
-     */
-    public function testGetCacheKey($n, $i, $l, $d, $expect)
+    public function testGetHash($n, $i, $l, $d, $expect)
     {
         $test = new Limit($n, $i, $l, $d);
-        $this->assertSame($expect, $test->getCacheKey());
+        $this->assertSame($expect, $test->getHash());
     }
 
-    public function providerGetCacheKey()
+    public function providerGetHash()
     {
         return [
             ["a", "b", 1, 2, "a|b|1|2"],
@@ -76,6 +25,8 @@ class LimitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::toArray
+     * @covers ::jsonSerialize
      * @dataProvider providerToArray
      */
     public function testToArray($name, $limit, $duration, $expect)

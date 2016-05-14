@@ -12,24 +12,24 @@ abstract class LimiterAbstract implements LimiterInterface
     protected $limits;
 
     /**
-     * The number of hits for the rate limits
+     * The period instances created after incrementing are stored here
      *
-     * @var int[]
+     * @var array<\sndsgd\rate\limit\Period>
      */
-    protected $hits = [];
-
-    /**
-     * The ttls for the rate limits
-     *
-     * @var int[]
-     */
-    protected $ttls = [];
+    protected $periods = [];
 
     /**
      * @param array<\sndsgd\rate\Limit> $limits
      */
     public function __construct(array $limits)
     {
+        if (empty($limits)) {
+            throw new \InvalidArgumentException(
+                "invalid value provided for 'limits'; expecting an array ".
+                "with at least one instance of sndsgd\\rate\\LimitInterface"
+            );
+        }
+
         $this->limits = \sndsgd\TypeTest::typedArray(
             $limits,
             \sndsgd\rate\LimitInterface::class
@@ -41,16 +41,17 @@ abstract class LimiterAbstract implements LimiterInterface
      */
     public function isExceeded(): bool
     {
+        if (empty($this->periods)) {
+            $this->increment();
+        }
+
         $result = false;
-        for ($i = 0, $len = count($this->rateLimits); $i < $len; $i++) {
-            $rateLimit = $this->rateLimits[$i];
-            $hits = $this->hitCounts[$i];
-            $remainingHits = $rateLimit->getRemainingHits($hits);
-            if ($remainingHits < 1) {
-                $result = true;
+        foreach ($this->periods as $period) {
+            if ($period->isLimitExceeded()) {
+                return true;
             }
         }
-        return $result;
+        return false;
     }
 
     /**
@@ -59,8 +60,8 @@ abstract class LimiterAbstract implements LimiterInterface
     public function getHeaders(): array
     {
         $ret = [];
-        foreach ($this->rateLimits as $rateLimit) {
-            $ret[$rateLimit->getHeaderKey()] = $rateLimit->getHeaderValue();
+        foreach ($this->periods as $period) {
+            $ret[] = $period->getHeader();
         }
         return $ret;
     }
