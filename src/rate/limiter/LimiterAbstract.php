@@ -30,10 +30,8 @@ abstract class LimiterAbstract implements LimiterInterface
             );
         }
 
-        $this->limits = \sndsgd\TypeTest::typedArray(
-            $limits,
-            \sndsgd\rate\LimitInterface::class
-        );
+        $type = \sndsgd\rate\LimitInterface::class;
+        $this->limits = \sndsgd\TypeTest::typedArray($limits, $type);
     }
 
     /**
