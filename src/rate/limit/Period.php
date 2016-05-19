@@ -84,7 +84,7 @@ class Period
      * @return string
      */
     public function getHeader(
-        $template = "X-RateLimit-%s: Limit: %d, Remaining-Hits: %d, Reset-In: %d"
+        $template = "X-RateLimit-%s: Limit: %d, Hits-Remaining: %d, Reset-In: %d"
     ): string
     {
         $name = preg_replace('/[^a-zA-Z0-9-]/', '-', $this->limit->getName());

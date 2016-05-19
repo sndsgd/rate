@@ -95,14 +95,14 @@ class PeriodTest extends \PHPUnit_Framework_TestCase
                 10,
                 5,
                 5,
-                "X-RateLimit-Test: Limit: 10, Remaining-Hits: 5, Reset-In: 5"
+                "X-RateLimit-Test: Limit: 10, Hits-Remaining: 5, Reset-In: 5"
             ],
             [
                 "Te!st",
                 10,
                 5,
                 5,
-                "X-RateLimit-Te-st: Limit: 10, Remaining-Hits: 5, Reset-In: 5"
+                "X-RateLimit-Te-st: Limit: 10, Hits-Remaining: 5, Reset-In: 5"
             ],
         ];
     }
