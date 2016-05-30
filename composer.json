@@ -4,6 +4,7 @@
     "type": "library",
     "homepage": "https://github.com/sndsgd/rate",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Russell B",
@@ -18,7 +19,7 @@
     "require": {
         "php": ">=7.0.0",
         "sndsgd/util": "~1.0.3",
-        "sndsgd/error": "dev-master"
+        "sndsgd/error": ">=0.0.3"
     },
     "autoload": {
         "psr-4": {
