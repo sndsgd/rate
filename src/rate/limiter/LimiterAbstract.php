@@ -59,7 +59,10 @@ abstract class LimiterAbstract implements LimiterInterface
     {
         $ret = [];
         foreach ($this->periods as $period) {
-            $ret[] = $period->getHeader();
+            $header = $period->getHeader();
+            if ($header !== "") {
+                $ret[] = $header;
+            }
         }
         return $ret;
     }

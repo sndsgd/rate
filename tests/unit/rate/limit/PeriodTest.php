@@ -70,12 +70,13 @@ class PeriodTest extends \PHPUnit_Framework_TestCase
     public function testGetHeader(
         $name,
         $limit,
+        $hidden,
         $remainingHits,
         $remainingSeconds,
         $expect
     )
     {
-        $limit = new \sndsgd\rate\Limit($name, '', $limit);
+        $limit = new \sndsgd\rate\Limit($name, '', $limit, 60, $hidden);
         $mock = $this->getMockBuilder(Period::class)
             ->setConstructorArgs([$limit])
             ->setMethods(["getRemainingHits", "getRemainingSeconds"])
@@ -91,8 +92,17 @@ class PeriodTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
+                "Hidden Test",
+                1,
+                true,
+                5,
+                5,
+                ""
+            ],
+            [
                 "Test",
                 10,
+                false,
                 5,
                 5,
                 "X-RateLimit-Test: Limit: 10, Hits-Remaining: 5, Reset-In: 5"
@@ -100,6 +110,7 @@ class PeriodTest extends \PHPUnit_Framework_TestCase
             [
                 "Te!st",
                 10,
+                false,
                 5,
                 5,
                 "X-RateLimit-Te-st: Limit: 10, Hits-Remaining: 5, Reset-In: 5"

@@ -87,6 +87,10 @@ class Period
         $template = "X-RateLimit-%s: Limit: %d, Hits-Remaining: %d, Reset-In: %d"
     ): string
     {
+        if ($this->limit->isHidden()) {
+            return "";
+        }
+
         $name = preg_replace('/[^a-zA-Z0-9-]/', '-', $this->limit->getName());
         return sprintf(
             $template,

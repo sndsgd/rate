@@ -34,21 +34,31 @@ class Limit implements LimitInterface, \JsonSerializable
     protected $duration;
 
     /**
+     * Whether the limit should be exposed to end users
+     *
+     * @var bool
+     */
+    protected $hidden;
+
+    /**
      * @param string $name
      * @param string $info
      * @param int $limit 
      * @param int $duration 
+     * @param bool $hidden
      */
     public function __construct(
         string $name,
         string $info,
         int $limit = 1,
-        int $duration = 1
+        int $duration = 1,
+        bool $hidden = false
     ) {
         $this->name = $name;
         $this->info = $info;
         $this->limit = max($limit, 1);
         $this->duration = max($duration, 1);
+        $this->hidden = $hidden;
     }
 
     /**
@@ -73,6 +83,14 @@ class Limit implements LimitInterface, \JsonSerializable
     public function getDuration(): int
     {
         return $this->duration;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isHidden(): bool
+    {
+        return $this->hidden;
     }
 
     /**

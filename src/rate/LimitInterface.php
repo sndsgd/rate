@@ -24,4 +24,11 @@ interface LimitInterface
      * @return int
      */
     public function getDuration(): int;
+
+    /**
+     * Whether the limit should be hidden from end users
+     *
+     * @return bool
+     */
+    public function isHidden(): bool;
 }
