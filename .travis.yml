@@ -3,6 +3,9 @@ language: php
 php:
   - 7.0
 
+before_install:
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 install:
   - composer install --no-interaction --prefer-source --dev
 
