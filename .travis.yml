@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 7.0
+
+install:
+  - composer install --no-interaction --prefer-source --dev
+
+script:
+  - phpunit --coverage-clover build/coverage/clover.xml
+
+after_script:
+  - vendor/bin/coveralls -v

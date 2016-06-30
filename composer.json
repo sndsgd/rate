@@ -1,6 +1,6 @@
 {
     "name": "sndsgd/rate",
-    "description": "rate tools",
+    "description": "Rate limiting for PHP",
     "type": "library",
     "homepage": "https://github.com/sndsgd/rate",
     "license": "MIT",
