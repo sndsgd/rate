@@ -15,10 +15,9 @@
         "issues": "https://github.com/sndsgd/rate/issues",
         "source": "https://github.com/sndsgd/rate/tree/master"
     },
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
-        "sndsgd/util": "~1.0.3",
+        "sndsgd/util": ">=1.1.0",
         "sndsgd/error": ">=0.0.3"
     },
     "require-dev": {
