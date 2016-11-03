@@ -3,8 +3,7 @@
 namespace sndsgd\rate\limiter;
 
 /**
- * A limiter implements the logic needed to determine if one or more limits 
- * have been exceeded
+ * A limiter implements logic to determine if any limits have been exceeded
  */
 interface LimiterInterface
 {
@@ -18,7 +17,7 @@ interface LimiterInterface
 
     /**
      * Determine if any rate limits have been exceeded
-     * 
+     *
      * @return bool
      */
     public function isExceeded(): bool;

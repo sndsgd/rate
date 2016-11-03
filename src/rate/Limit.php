@@ -34,7 +34,7 @@ class Limit implements LimitInterface, \JsonSerializable
     protected $duration;
 
     /**
-     * Whether the limit should be exposed to end users
+     * Whether the limit should be exposed to the client
      *
      * @var bool
      */
@@ -43,8 +43,8 @@ class Limit implements LimitInterface, \JsonSerializable
     /**
      * @param string $name
      * @param string $info
-     * @param int $limit 
-     * @param int $duration 
+     * @param int $limit
+     * @param int $duration
      * @param bool $hidden
      */
     public function __construct(
@@ -94,7 +94,7 @@ class Limit implements LimitInterface, \JsonSerializable
     }
 
     /**
-     * Retreive the cache key to store the hit value in
+     * Retrieve the cache key to store the hit value in
      *
      * The hash does NOT include the limit so the limit can be changed
      * without having an affect on the current count

@@ -3,13 +3,12 @@
 namespace sndsgd\rate\limit;
 
 /**
- * A rate limit period is a combination of a limit, and the information about 
- * the progress towards the limit.
+ * A limit and details regarding progress towards it
  */
 class Period
 {
     /**
-     * The limit 
+     * The limit
      *
      * @var \sndsgd\rate\LimitInterface
      */
