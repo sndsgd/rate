@@ -17,7 +17,7 @@
     },
     "require": {
         "php": ">=7.0.0",
-        "sndsgd/util": ">=1.1.0",
+        "sndsgd/util": ">=1.1.2",
         "sndsgd/error": ">=0.0.3"
     },
     "require-dev": {
