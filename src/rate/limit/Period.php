@@ -44,6 +44,16 @@ class Period
     }
 
     /**
+     * Retrieve the limit instance
+     *
+     * @return \sndsgd\rate\LimitInterface
+     */
+    public function getLimit(): \sndsgd\rate\LimitInterface
+    {
+        return $this->limit;
+    }
+
+    /**
      * Determine whether the limit has been exceeded
      *
      * @return bool

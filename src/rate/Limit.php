@@ -62,7 +62,7 @@ class Limit implements LimitInterface, \JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -70,7 +70,7 @@ class Limit implements LimitInterface, \JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getLimit(): int
     {
@@ -78,7 +78,7 @@ class Limit implements LimitInterface, \JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getDuration(): int
     {
@@ -86,7 +86,7 @@ class Limit implements LimitInterface, \JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isHidden(): bool
     {

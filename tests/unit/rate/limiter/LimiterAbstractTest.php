@@ -99,4 +99,15 @@ class LimiterAbstractTest extends \PHPUnit_Framework_TestCase
             [[$makePeriod("a"), $makePeriod("b")], ["a", "b"]],
         ];
     }
+
+    public function testGetPeriods()
+    {
+        $mock = $this->getMockBuilder(LimiterAbstract::class)
+            ->disableOriginalConstructor()
+            ->setMethods(["increment"])
+            ->getMockForAbstractClass();
+
+        $mock->expects($this->once())->method("increment");
+        $mock->getPeriods();
+    }
 }

@@ -4,6 +4,13 @@ namespace sndsgd\rate\limit;
 
 class PeriodTest extends \PHPUnit_Framework_TestCase
 {
+    public function testGetLimit()
+    {
+        $limit = new \sndsgd\rate\Limit('', '');
+        $period = new Period($limit);
+        $this->assertSame($limit, $period->getLimit());
+    }
+
     /**
      * @dataProvider providerIsLimitExceeded
      */

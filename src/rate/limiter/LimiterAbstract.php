@@ -16,7 +16,7 @@ abstract class LimiterAbstract implements LimiterInterface
      *
      * @var array<\sndsgd\rate\limit\Period>
      */
-    protected $periods = [];
+    protected $periods;
 
     /**
      * @param array<\sndsgd\rate\Limit> $limits
@@ -35,16 +35,12 @@ abstract class LimiterAbstract implements LimiterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isExceeded(): bool
     {
-        if (empty($this->periods)) {
-            $this->increment();
-        }
-
         $result = false;
-        foreach ($this->periods as $period) {
+        foreach ($this->getPeriods() as $period) {
             if ($period->isLimitExceeded()) {
                 return true;
             }
@@ -53,17 +49,28 @@ abstract class LimiterAbstract implements LimiterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHeaders(): array
     {
         $ret = [];
-        foreach ($this->periods as $period) {
+        foreach ($this->getPeriods() as $period) {
             $header = $period->getHeader();
             if ($header !== "") {
                 $ret[] = $header;
             }
         }
         return $ret;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPeriods(): array
+    {
+        if ($this->periods === null) {
+            $this->increment();
+        }
+        return $this->periods ?? [];
     }
 }

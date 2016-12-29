@@ -22,7 +22,7 @@ class RedisLimiter extends LimiterAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function increment(int $incrementBy = 1): LimiterInterface
     {

@@ -28,4 +28,11 @@ interface LimiterInterface
      * @return array<string,string>
      */
     public function getHeaders(): array;
+
+    /**
+     * Retrieve an array of rate limit periods
+     *
+     * @return array<\sndsgd\rate\limit\Period>
+     */
+    public function getPeriods(): array;
 }
