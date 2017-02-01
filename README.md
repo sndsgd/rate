@@ -27,18 +27,19 @@ Install `sndsgd/rate` using [Composer](https://getcomposer.org/).
 
 ```php
 # define the rate limits
-$clientIp = $di["request"]->getClientIp();
+$clientIp = $di->getClient()->getIp();
 $limits = [
     new \sndsgd\rate\Limit("Search-PerSecond", $clientIp, 1, 3),
     new \sndsgd\rate\Limit("Search-PerHour", $clientIp, 600, 3600),
 ];
 
 # create a limiter, and increment the hit counts for all limits
-$limiter = new \sndsgd\rate\limiter\RedisLimiter($di["redis"], $limits);
+$redis = $di->getRedis();
+$limiter = new \sndsgd\rate\limiter\RedisLimiter($redis, $limits);
 $limiter->increment();
 
 # copy the rate limit headers to the response
-$response = $di["response"];
+$response = $di->getResponse();
 foreach ($limiter->getHeaders() as $header) {
     list($key, $value) = preg_split("/\:\s?/", $header, 2);
     $response->addHeader($key, $value);
@@ -46,6 +47,6 @@ foreach ($limiter->getHeaders() as $header) {
 
 # if the limit was exceeded, prevent futher execution
 if ($limiter->isExceeded()) {
-    throw new \sndsgd\exception\TooManyRequestsException();
+    throw new \sndsgd\http\exception\TooManyRequestsException();
 }
 ```
