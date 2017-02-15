@@ -87,7 +87,7 @@ class Period
     }
 
     /**
-     * Get a header suitable for HTTP responses
+     * Get a header suitable for an HTTP response
      *
      * @param string $template A template for the comlete header
      * @return string
@@ -100,7 +100,7 @@ class Period
             return "";
         }
 
-        $name = preg_replace('/[^a-zA-Z0-9-]/', '-', $this->limit->getName());
+        $name = preg_replace("/[^a-zA-Z0-9-]/", "-", $this->limit->getName());
         return sprintf(
             $template,
             $name,
